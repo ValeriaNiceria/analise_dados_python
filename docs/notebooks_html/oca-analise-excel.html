@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>senadores</title>
+<title>oca-analise-excel</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -11434,6 +11434,8 @@ div#notebook {
     padding: 15px;
     background-color: #fff;
     min-height: 0;
+    -webkit-box-shadow: 0px 0px 12px 1px rgba(87, 87, 87, 0.2);
+    box-shadow: 0px 0px 12px 1px rgba(87, 87, 87, 0.2);
   }
 }
 @media print {
@@ -13075,9 +13077,8 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="An&#225;lise-dos-dados-de-reembolso-dos-senadores---2018">An&#225;lise dos dados de reembolso dos senadores - 2018<a class="anchor-link" href="#An&#225;lise-dos-dados-de-reembolso-dos-senadores---2018">&#182;</a></h1><ul>
-<li>link dos dados <a href="https://www12.senado.leg.br/transparencia/dados-abertos-transparencia/dados-abertos-ceaps">Cotas para Exercício da Atividade Parlamentar dos Senadores (CEAPS)</a></li>
-</ul>
+<h1 id="An&#225;lise-de-Dados-de-Filmes-Exibidos-no-Brasil-de-2009-a-2017">An&#225;lise de Dados de Filmes Exibidos no Brasil de 2009 a 2017<a class="anchor-link" href="#An&#225;lise-de-Dados-de-Filmes-Exibidos-no-Brasil-de-2009-a-2017">&#182;</a></h1><blockquote><p>Com base nos dados da Ancine (<a href="https://oca.ancine.gov.br/">https://oca.ancine.gov.br/</a>)</p>
+</blockquote>
 
 </div>
 </div>
@@ -13087,8 +13088,10 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Importando as bibliotecas</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Importando a biblioteca pandas</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="c1"># Informando para o pandas mostrar o gráfico no jupyter notebook</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 
     </div>
@@ -13101,9 +13104,23 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Carregando o arquivo csv</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;dados/2018.csv&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;;&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;latin1&#39;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">decimal</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Lendo o arquivo e atribuindo a uma variável - convertendo o arquivo em um DataFrame</span>
+<span class="c1"># Pulando as 2 primeiras linhas (skiprows)</span>
+<span class="c1"># Descartando as últimas 16 linhas (skipfooter)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">&#39;ListagemFilmesBrasileirosEstrangeirosExibidos2009-2017.xlsx&#39;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">skipfooter</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+</pre></div>
 
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Exibindo as 5 primeiras linhas do DataFrame</span>
 <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
@@ -13117,7 +13134,7 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[2]:</div>
+    <div class="prompt output_prompt">Out[3]:</div>
 
 
 
@@ -13140,83 +13157,83 @@ div#notebook {
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>ANO</th>
-      <th>MES</th>
-      <th>SENADOR</th>
-      <th>TIPO_DESPESA</th>
-      <th>CNPJ_CPF</th>
-      <th>FORNECEDOR</th>
-      <th>DOCUMENTO</th>
-      <th>DATA</th>
-      <th>DETALHAMENTO</th>
-      <th>VALOR_REEMBOLSADO</th>
+      <th>Ano de exibição</th>
+      <th>Título da obra</th>
+      <th>Gênero</th>
+      <th>País(es) produtor(es) da obra</th>
+      <th>Nacionalidade da obra</th>
+      <th>Data de lançamento</th>
+      <th>Distribuidora</th>
+      <th>Origem da empresa distribuidora</th>
+      <th>Público no ano de exibição</th>
+      <th>Renda (R$) no ano de exibição</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>2018</td>
-      <td>1</td>
-      <td>ACIR GURGACZ</td>
-      <td>Aluguel de imóveis para escritório político, c...</td>
-      <td>004.948.028-63</td>
-      <td>GILBERTO PISELO DO NASCIMENTO</td>
-      <td>NaN</td>
-      <td>02/01/2018</td>
-      <td>Despesa com pagamento de aluguel de imóvel par...</td>
-      <td>6000.00</td>
+      <td>2017</td>
+      <td>#Screamers</td>
+      <td>Ficção</td>
+      <td>Estados Unidos</td>
+      <td>Estrangeiros</td>
+      <td>2017-11-30 00:00:00</td>
+      <td>Cineart Filmes</td>
+      <td>Distribuição Nacional</td>
+      <td>714</td>
+      <td>9437.45</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>2018</td>
-      <td>1</td>
-      <td>ACIR GURGACZ</td>
-      <td>Passagens aéreas, aquáticas e terrestres nacio...</td>
-      <td>63.764.211/0001-10</td>
-      <td>TRANSCONTINENTAL AGÊNCIA DE VIAGENS LTDA</td>
-      <td>M2CJMM</td>
-      <td>02/01/2018</td>
-      <td>Companhia Aérea: AVIANCA, Localizador: M2CJMM....</td>
-      <td>274.99</td>
+      <td>2017</td>
+      <td>10 Centavos para o Número da Besta</td>
+      <td>Documentário</td>
+      <td>Brasil</td>
+      <td>Brasileiros</td>
+      <td>2017-11-28 00:00:00</td>
+      <td>Ponto de Equilíbrio</td>
+      <td>Distribuição Nacional</td>
+      <td>7</td>
+      <td>63.00</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>2018</td>
-      <td>1</td>
-      <td>ACIR GURGACZ</td>
-      <td>Passagens aéreas, aquáticas e terrestres nacio...</td>
-      <td>63.764.211/0001-10</td>
-      <td>TRANSCONTINENTAL AGÊNCIA DE VIAGENS LTDA</td>
-      <td>SFEXYF</td>
-      <td>02/01/2018</td>
-      <td>Companhia Aérea: LATAM, Localizador: SFEXYF. P...</td>
-      <td>1094.29</td>
+      <td>2017</td>
+      <td>120 batimentos por minuto</td>
+      <td>Ficção</td>
+      <td>França</td>
+      <td>Estrangeiros</td>
+      <td>2018-01-04 00:00:00</td>
+      <td>Imovision</td>
+      <td>Distribuição Nacional</td>
+      <td>262</td>
+      <td>3791.63</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>2018</td>
-      <td>1</td>
-      <td>ACIR GURGACZ</td>
-      <td>Passagens aéreas, aquáticas e terrestres nacio...</td>
-      <td>63.764.211/0001-10</td>
-      <td>TRANSCONTINENTAL AGÊNCIA DE VIAGENS LTDA</td>
-      <td>V64HTR</td>
-      <td>24/01/2018</td>
-      <td>Companhia Aérea: AZUL, Localizador: V64HTR. Pa...</td>
-      <td>1553.99</td>
+      <td>2017</td>
+      <td>13 Minutos</td>
+      <td>Ficção</td>
+      <td>Alemanha</td>
+      <td>Estrangeiros</td>
+      <td>2016-11-03 00:00:00</td>
+      <td>Alphaville Filmes</td>
+      <td>Distribuição Nacional</td>
+      <td>620</td>
+      <td>6463.50</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>2018</td>
-      <td>2</td>
-      <td>ACIR GURGACZ</td>
-      <td>Aluguel de imóveis para escritório político, c...</td>
-      <td>004.948.028-63</td>
-      <td>GILBERTO PISELO DO NASCIMENTO</td>
-      <td>002/18</td>
-      <td>01/02/2018</td>
-      <td>Despesa com pagamento de aluguel de imóvel par...</td>
-      <td>6000.00</td>
+      <td>2017</td>
+      <td>150 Miligramas</td>
+      <td>Ficção</td>
+      <td>França</td>
+      <td>Estrangeiros</td>
+      <td>2017-08-31 00:00:00</td>
+      <td>Califórnia</td>
+      <td>Distribuição Nacional</td>
+      <td>771</td>
+      <td>10508.71</td>
     </tr>
   </tbody>
 </table>
@@ -13231,59 +13248,11 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Verificando o tamanho e os tipos dos dados</span>
-<span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
-RangeIndex: 24444 entries, 0 to 24443
-Data columns (total 10 columns):
- #   Column             Non-Null Count  Dtype  
----  ------             --------------  -----  
- 0   ANO                24444 non-null  int64  
- 1   MES                24444 non-null  int64  
- 2   SENADOR            24444 non-null  object 
- 3   TIPO_DESPESA       24444 non-null  object 
- 4   CNPJ_CPF           24444 non-null  object 
- 5   FORNECEDOR         24444 non-null  object 
- 6   DOCUMENTO          23455 non-null  object 
- 7   DATA               24444 non-null  object 
- 8   DETALHAMENTO       18848 non-null  object 
- 9   VALOR_REEMBOLSADO  24444 non-null  float64
-dtypes: float64(1), int64(2), object(7)
-memory usage: 1.9+ MB
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Mostrar uma análise quantitativa dos dados</span>
-<span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Exibindo as 5 últimas linhas do DataFrame</span>
+<span class="n">df</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13319,59 +13288,83 @@ memory usage: 1.9+ MB
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>ANO</th>
-      <th>MES</th>
-      <th>VALOR_REEMBOLSADO</th>
+      <th>Ano de exibição</th>
+      <th>Título da obra</th>
+      <th>Gênero</th>
+      <th>País(es) produtor(es) da obra</th>
+      <th>Nacionalidade da obra</th>
+      <th>Data de lançamento</th>
+      <th>Distribuidora</th>
+      <th>Origem da empresa distribuidora</th>
+      <th>Público no ano de exibição</th>
+      <th>Renda (R$) no ano de exibição</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>count</th>
-      <td>24444.0</td>
-      <td>24444.000000</td>
-      <td>24444.000000</td>
+      <th>5686</th>
+      <td>2009</td>
+      <td>X-Men Origens: Wolverine</td>
+      <td>Ficção</td>
+      <td>Estados Unidos</td>
+      <td>Estrangeiros</td>
+      <td>2009-05-01 00:00:00</td>
+      <td>Fox</td>
+      <td>Distribuição Internacional</td>
+      <td>3199434</td>
+      <td>27352313.00</td>
     </tr>
     <tr>
-      <th>mean</th>
-      <td>2018.0</td>
-      <td>6.193585</td>
-      <td>1046.806915</td>
+      <th>5687</th>
+      <td>2009</td>
+      <td>Xuxa em o Mistério de Feiurinha</td>
+      <td>Ficção</td>
+      <td>Brasil</td>
+      <td>Brasileiros</td>
+      <td>2009-12-25 00:00:00</td>
+      <td>Playarte</td>
+      <td>Distribuição Nacional</td>
+      <td>250109</td>
+      <td>1766416.65</td>
     </tr>
     <tr>
-      <th>std</th>
-      <td>0.0</td>
-      <td>3.306265</td>
-      <td>2721.041726</td>
+      <th>5688</th>
+      <td>2009</td>
+      <td>Xuxa em Sonho de Menina</td>
+      <td>Ficção</td>
+      <td>Brasil</td>
+      <td>Brasileiros</td>
+      <td>2007-12-21 00:00:00</td>
+      <td>Warner</td>
+      <td>Distribuição Internacional</td>
+      <td>8914</td>
+      <td>26880.00</td>
     </tr>
     <tr>
-      <th>min</th>
-      <td>2018.0</td>
-      <td>1.000000</td>
-      <td>0.010000</td>
+      <th>5689</th>
+      <td>2009</td>
+      <td>Xuxa Gêmeas</td>
+      <td>Ficção</td>
+      <td>Brasil</td>
+      <td>Brasileiros</td>
+      <td>2006-12-15 00:00:00</td>
+      <td>Fox</td>
+      <td>Distribuição Internacional</td>
+      <td>1671</td>
+      <td>5013.00</td>
     </tr>
     <tr>
-      <th>25%</th>
-      <td>2018.0</td>
-      <td>3.000000</td>
-      <td>125.000000</td>
-    </tr>
-    <tr>
-      <th>50%</th>
-      <td>2018.0</td>
-      <td>6.000000</td>
-      <td>288.090000</td>
-    </tr>
-    <tr>
-      <th>75%</th>
-      <td>2018.0</td>
-      <td>9.000000</td>
-      <td>1036.170000</td>
-    </tr>
-    <tr>
-      <th>max</th>
-      <td>2018.0</td>
-      <td>12.000000</td>
-      <td>103900.000000</td>
+      <th>5690</th>
+      <td>2009</td>
+      <td>Zico na Rede</td>
+      <td>Documentário</td>
+      <td>Brasil</td>
+      <td>Brasileiros</td>
+      <td>2009-07-03 00:00:00</td>
+      <td>Business Telecom</td>
+      <td>Distribuição Nacional</td>
+      <td>546</td>
+      <td>2529.50</td>
     </tr>
   </tbody>
 </table>
@@ -13389,8 +13382,8 @@ memory usage: 1.9+ MB
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Qual o total de reembolsos?</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;VALOR_REEMBOLSADO&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Verificar todos os tipos das colunas</span>
+<span class="n">df</span><span class="o">.</span><span class="n">dtypes</span>
 </pre></div>
 
     </div>
@@ -13409,7 +13402,17 @@ memory usage: 1.9+ MB
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>25588148.22</pre>
+<pre>Ano de exibição                      int64
+Título da obra                      object
+Gênero                              object
+País(es) produtor(es) da obra       object
+Nacionalidade da obra               object
+Data de lançamento                  object
+Distribuidora                       object
+Origem da empresa distribuidora     object
+Público no ano de exibição           int64
+Renda (R$) no ano de exibição      float64
+dtype: object</pre>
 </div>
 
 </div>
@@ -13423,8 +13426,8 @@ memory usage: 1.9+ MB
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Quantos reembolsos foram solicitados por cada senador?</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;SENADOR&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Convertendo o campo &#39;Data de lançamento&#39; em data</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Data de lançamento&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Data de lançamento&#39;</span><span class="p">])</span>
 </pre></div>
 
     </div>
@@ -13437,26 +13440,67 @@ memory usage: 1.9+ MB
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[6]:</div>
+    <div class="prompt"></div>
 
 
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">UnicodeEncodeError</span>                        Traceback (most recent call last)
+<span class="ansi-green-fg">pandas/_libs/tslib.pyx</span> in <span class="ansi-cyan-fg">pandas._libs.tslib.array_to_datetime</span><span class="ansi-blue-fg">()</span>
 
+<span class="ansi-green-fg">pandas/_libs/tslibs/np_datetime.pyx</span> in <span class="ansi-cyan-fg">pandas._libs.tslibs.np_datetime._string_to_dts</span><span class="ansi-blue-fg">()</span>
 
-<div class="output_text output_subarea output_execute_result">
-<pre>EDUARDO LOPES          864
-PAULO BAUER            824
-WELLINGTON FAGUNDES    799
-JOSÉ SERRA             694
-GLEISI HOFFMANN        653
-                      ... 
-ALVARO DIAS             40
-FERNANDO COLLOR         27
-JADER BARBALHO          19
-CRISTOVAM BUARQUE       16
-ZÉ SANTANA               8
-Name: SENADOR, Length: 91, dtype: int64</pre>
+<span class="ansi-red-fg">UnicodeEncodeError</span>: &#39;ascii&#39; codec can&#39;t encode character &#39;\xe7&#39; in position 5: ordinal not in range(128)
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-fg">ValueError</span>                                Traceback (most recent call last)
+<span class="ansi-green-fg">pandas/_libs/tslib.pyx</span> in <span class="ansi-cyan-fg">pandas._libs.tslib.array_to_datetime</span><span class="ansi-blue-fg">()</span>
+
+<span class="ansi-green-fg">pandas/_libs/tslibs/parsing.pyx</span> in <span class="ansi-cyan-fg">pandas._libs.tslibs.parsing.parse_datetime_string</span><span class="ansi-blue-fg">()</span>
+
+<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/dateutil/parser/_parser.py</span> in <span class="ansi-cyan-fg">parse</span><span class="ansi-blue-fg">(timestr, parserinfo, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1355</span>     <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1356</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> DEFAULTPARSER<span class="ansi-blue-fg">.</span>parse<span class="ansi-blue-fg">(</span>timestr<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1357</span> 
+
+<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/dateutil/parser/_parser.py</span> in <span class="ansi-cyan-fg">parse</span><span class="ansi-blue-fg">(self, timestr, default, ignoretz, tzinfos, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">    647</span>         <span class="ansi-green-fg">if</span> res <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 648</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">raise</span> ValueError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;Unknown string format:&#34;</span><span class="ansi-blue-fg">,</span> timestr<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    649</span> 
+
+<span class="ansi-red-fg">ValueError</span>: (&#39;Unknown string format:&#39;, &#39;Relançamento&#39;)
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-6-b072ac130db4&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-red-fg"># Convertendo o campo &#39;Data de lançamento&#39; em data</span>
+<span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg"> </span>df<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;Data de lançamento&#39;</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> pd<span class="ansi-blue-fg">.</span>to_datetime<span class="ansi-blue-fg">(</span>df<span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">&#39;Data de lançamento&#39;</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/pandas/core/tools/datetimes.py</span> in <span class="ansi-cyan-fg">to_datetime</span><span class="ansi-blue-fg">(arg, errors, dayfirst, yearfirst, utc, box, format, exact, unit, infer_datetime_format, origin, cache)</span>
+<span class="ansi-green-intense-fg ansi-bold">    449</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    450</span>             <span class="ansi-green-fg">from</span> pandas <span class="ansi-green-fg">import</span> Series
+<span class="ansi-green-fg">--&gt; 451</span><span class="ansi-red-fg">             </span>values <span class="ansi-blue-fg">=</span> _convert_listlike<span class="ansi-blue-fg">(</span>arg<span class="ansi-blue-fg">.</span>_values<span class="ansi-blue-fg">,</span> <span class="ansi-green-fg">True</span><span class="ansi-blue-fg">,</span> format<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    452</span>             result <span class="ansi-blue-fg">=</span> Series<span class="ansi-blue-fg">(</span>values<span class="ansi-blue-fg">,</span> index<span class="ansi-blue-fg">=</span>arg<span class="ansi-blue-fg">.</span>index<span class="ansi-blue-fg">,</span> name<span class="ansi-blue-fg">=</span>arg<span class="ansi-blue-fg">.</span>name<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    453</span>     <span class="ansi-green-fg">elif</span> isinstance<span class="ansi-blue-fg">(</span>arg<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">(</span>ABCDataFrame<span class="ansi-blue-fg">,</span> MutableMapping<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/pandas/core/tools/datetimes.py</span> in <span class="ansi-cyan-fg">_convert_listlike</span><span class="ansi-blue-fg">(arg, box, format, name, tz)</span>
+<span class="ansi-green-intense-fg ansi-bold">    366</span>                     dayfirst<span class="ansi-blue-fg">=</span>dayfirst<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">    367</span>                     yearfirst<span class="ansi-blue-fg">=</span>yearfirst<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-fg">--&gt; 368</span><span class="ansi-red-fg">                     </span>require_iso8601<span class="ansi-blue-fg">=</span>require_iso8601
+<span class="ansi-green-intense-fg ansi-bold">    369</span>                 )
+<span class="ansi-green-intense-fg ansi-bold">    370</span> 
+
+<span class="ansi-green-fg">pandas/_libs/tslib.pyx</span> in <span class="ansi-cyan-fg">pandas._libs.tslib.array_to_datetime</span><span class="ansi-blue-fg">()</span>
+
+<span class="ansi-green-fg">pandas/_libs/tslib.pyx</span> in <span class="ansi-cyan-fg">pandas._libs.tslib.array_to_datetime</span><span class="ansi-blue-fg">()</span>
+
+<span class="ansi-green-fg">pandas/_libs/tslib.pyx</span> in <span class="ansi-cyan-fg">pandas._libs.tslib.array_to_datetime</span><span class="ansi-blue-fg">()</span>
+
+<span class="ansi-red-fg">TypeError</span>: invalid string coercion to datetime</pre>
 </div>
-
 </div>
 
 </div>
@@ -13468,8 +13512,8 @@ Name: SENADOR, Length: 91, dtype: int64</pre>
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Quantos cada senador solicitou de reembolso em 2018?</span>
-<span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;SENADOR&#39;</span><span class="p">)[</span><span class="s1">&#39;VALOR_REEMBOLSADO&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Tentando identificar o problema da coluna &#39;Data de lançamento&#39;</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Data de lançamento&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -13488,19 +13532,68 @@ Name: SENADOR, Length: 91, dtype: int64</pre>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>SENADOR
-EDUARDO BRAGA         529579.18
-VANESSA GRAZZIOTIN    515639.63
-JOÃO CAPIBERIBE       513213.90
-ÂNGELA PORTELA        485806.44
-OMAR AZIZ             484143.98
-                        ...    
-ALVARO DIAS            44037.88
-WALTER PINHEIRO        32733.67
-CRISTOVAM BUARQUE      32400.00
-ZÉ SANTANA             23300.67
-IONE GUIMARÃES         11379.91
-Name: VALOR_REEMBOLSADO, Length: 91, dtype: float64</pre>
+<pre>Relançamento           175
+2015-12-03 00:00:00     33
+2012-12-21 00:00:00     33
+2013-11-29 00:00:00     29
+2012-11-02 00:00:00     27
+2015-11-12 00:00:00     25
+2015-11-19 00:00:00     25
+2013-12-06 00:00:00     23
+2013-10-11 00:00:00     23
+2013-11-01 00:00:00     23
+2016-11-17 00:00:00     23
+2014-11-06 00:00:00     21
+2011-11-11 00:00:00     21
+2011-12-02 00:00:00     21
+2013-09-13 00:00:00     21
+2009-12-11 00:00:00     20
+2016-11-10 00:00:00     19
+2011-09-30 00:00:00     19
+2013-12-20 00:00:00     19
+2014-06-19 00:00:00     19
+2011-12-09 00:00:00     19
+2015-12-10 00:00:00     18
+2013-09-06 00:00:00     18
+2012-10-12 00:00:00     18
+2016-11-24 00:00:00     18
+2015-08-20 00:00:00     18
+2011-11-25 00:00:00     18
+2016-12-01 00:00:00     18
+2014-12-04 00:00:00     18
+2015-11-26 00:00:00     18
+                      ... 
+2011-07-02 00:00:00      1
+2006-10-06 00:00:00      1
+2006-11-24 00:00:00      1
+2002-11-01 00:00:00      1
+2006-08-11 00:00:00      1
+2014-03-28 00:00:00      1
+2017-12-02 00:00:00      1
+2009-10-28 00:00:00      1
+2011-10-01 00:00:00      1
+2013-02-09 00:00:00      1
+2015-11-01 00:00:00      1
+2008-06-28 00:00:00      1
+2006-11-17 00:00:00      1
+2008-11-29 00:00:00      1
+2009-05-22 00:00:00      1
+2018-11-29 00:00:00      1
+2011-03-09 00:00:00      1
+2008-05-02 00:00:00      1
+2018-02-08 00:00:00      1
+2008-04-18 00:00:00      1
+2004-01-09 00:00:00      1
+2008-10-18 00:00:00      1
+2017-11-28 00:00:00      1
+2014-07-04 00:00:00      1
+2006-09-22 00:00:00      1
+2005-08-25 00:00:00      1
+2009-01-31 00:00:00      1
+2004-05-21 00:00:00      1
+2001-04-06 00:00:00      1
+2007-07-20 00:00:00      1
+Name: Data de lançamento, Length: 759, dtype: int64</pre>
 </div>
 
 </div>
@@ -13511,11 +13604,11 @@ Name: VALOR_REEMBOLSADO, Length: 91, dtype: float64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Quais os 5 maiores valores de reembolso?</span>
-<span class="n">df</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;VALOR_REEMBOLSADO&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Exibir 5 primeiros filmes que campo &#39;Data de lançamento&#39; igual à Relançamento</span>
+<span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Data de lançamento&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Relançamento&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -13528,7 +13621,7 @@ Name: VALOR_REEMBOLSADO, Length: 91, dtype: float64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[8]:</div>
+    <div class="prompt output_prompt">Out[18]:</div>
 
 
 
@@ -13551,93 +13644,83 @@ Name: VALOR_REEMBOLSADO, Length: 91, dtype: float64</pre>
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>21190</th>
-      <th>21453</th>
-      <th>21456</th>
-      <th>22630</th>
-      <th>5570</th>
+      <th>Ano de exibição</th>
+      <th>Título da obra</th>
+      <th>Gênero</th>
+      <th>País(es) produtor(es) da obra</th>
+      <th>Nacionalidade da obra</th>
+      <th>Data de lançamento</th>
+      <th>Distribuidora</th>
+      <th>Origem da empresa distribuidora</th>
+      <th>Público no ano de exibição</th>
+      <th>Renda (R$) no ano de exibição</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>ANO</th>
-      <td>2018</td>
-      <td>2018</td>
-      <td>2018</td>
-      <td>2018</td>
-      <td>2018</td>
+      <th>7</th>
+      <td>2017</td>
+      <td>8½</td>
+      <td>Ficção</td>
+      <td>França, Itália</td>
+      <td>Estrangeiros</td>
+      <td>Relançamento</td>
+      <td>F. J. Cines</td>
+      <td>Distribuição Nacional</td>
+      <td>29</td>
+      <td>196.00</td>
     </tr>
     <tr>
-      <th>MES</th>
+      <th>11</th>
+      <td>2017</td>
+      <td>A bela da tarde</td>
+      <td>Ficção</td>
+      <td>França, Itália</td>
+      <td>Estrangeiros</td>
+      <td>Relançamento</td>
+      <td>Zeta Filmes</td>
+      <td>Distribuição Nacional</td>
+      <td>3011</td>
+      <td>42839.31</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>2017</td>
+      <td>A História sem Fim</td>
+      <td>Ficção</td>
+      <td>Alemanha, Estados Unidos</td>
+      <td>Estrangeiros</td>
+      <td>Relançamento</td>
+      <td>F. J. Cines</td>
+      <td>Distribuição Nacional</td>
+      <td>797</td>
+      <td>6969.00</td>
+    </tr>
+    <tr>
+      <th>53</th>
+      <td>2017</td>
+      <td>A primeira noite de um homem</td>
+      <td>Ficção</td>
+      <td>Estados Unidos</td>
+      <td>Estrangeiros</td>
+      <td>Relançamento</td>
+      <td>Zeta Filmes</td>
+      <td>Distribuição Nacional</td>
       <td>12</td>
-      <td>11</td>
-      <td>12</td>
-      <td>12</td>
-      <td>12</td>
+      <td>96.00</td>
     </tr>
     <tr>
-      <th>SENADOR</th>
-      <td>ROSE DE FREITAS</td>
-      <td>SÉRGIO PETECÃO</td>
-      <td>SÉRGIO PETECÃO</td>
-      <td>VANESSA GRAZZIOTIN</td>
-      <td>EDUARDO LOPES</td>
-    </tr>
-    <tr>
-      <th>TIPO_DESPESA</th>
-      <td>Divulgação da atividade parlamentar</td>
-      <td>Contratação de consultorias, assessorias, pesq...</td>
-      <td>Contratação de consultorias, assessorias, pesq...</td>
-      <td>Contratação de consultorias, assessorias, pesq...</td>
-      <td>Divulgação da atividade parlamentar</td>
-    </tr>
-    <tr>
-      <th>CNPJ_CPF</th>
-      <td>05.461.408/0001-84</td>
-      <td>22.233.033/0001-14</td>
-      <td>22.233.033/0001-14</td>
-      <td>28.916.527/0001-80</td>
-      <td>14.616.988/0001-22</td>
-    </tr>
-    <tr>
-      <th>FORNECEDOR</th>
-      <td>Grafitusa S/A</td>
-      <td>Reis Grafica e Comercio de Etiquetas Eireli ME</td>
-      <td>Reis Grafica e Comercio de Etiquetas Eireli ME</td>
-      <td>A MAQUINA SOLUCOES EM MIDIA LTDA ME</td>
-      <td>NG Comunicação Visual Ltda</td>
-    </tr>
-    <tr>
-      <th>DOCUMENTO</th>
-      <td>000009681</td>
-      <td>4193</td>
-      <td>000004252</td>
-      <td>048</td>
-      <td>00000714</td>
-    </tr>
-    <tr>
-      <th>DATA</th>
-      <td>29/03/2019</td>
-      <td>29/11/2018</td>
-      <td>17/12/2018</td>
-      <td>17/12/2018</td>
-      <td>05/12/2018</td>
-    </tr>
-    <tr>
-      <th>DETALHAMENTO</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>TRABALHOS TÉCNICOS DE APOIO AO EXERCICIO DO MA...</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>VALOR_REEMBOLSADO</th>
-      <td>103900</td>
-      <td>102000</td>
-      <td>102000</td>
-      <td>100000</td>
-      <td>66000</td>
+      <th>128</th>
+      <td>2017</td>
+      <td>Ballet Bolshoi: A bela adormecida</td>
+      <td>Vídeomusical</td>
+      <td>Inglaterra</td>
+      <td>Estrangeiros</td>
+      <td>Relançamento</td>
+      <td>UCI</td>
+      <td>Distribuição Nacional</td>
+      <td>1504</td>
+      <td>41391.00</td>
     </tr>
   </tbody>
 </table>
@@ -13650,13 +13733,20 @@ Name: VALOR_REEMBOLSADO, Length: 91, dtype: float64</pre>
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Decis&#227;o-sobre-dados-incorretos/faltantes/divergentes">Decis&#227;o sobre dados incorretos/faltantes/divergentes<a class="anchor-link" href="#Decis&#227;o-sobre-dados-incorretos/faltantes/divergentes">&#182;</a></h2>
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Quais os 5 menores valores de reembolso?</span>
-<span class="n">df</span><span class="o">.</span><span class="n">nsmallest</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;VALOR_REEMBOLSADO&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Tamanho do DataFrame</span>
+<span class="n">df</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 
     </div>
@@ -13669,7 +13759,54 @@ Name: VALOR_REEMBOLSADO, Length: 91, dtype: float64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[9]:</div>
+    <div class="prompt output_prompt">Out[19]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(5691, 10)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Criando um novo DataFrame sem o campo &#39;Data de lançamento&#39; igual à Relançamento</span>
+<span class="n">df_novo</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Data de lançamento&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;Relançamento&#39;</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_novo</span><span class="p">[</span><span class="n">df_novo</span><span class="p">[</span><span class="s1">&#39;Data de lançamento&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Relançamento&#39;</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[21]:</div>
 
 
 
@@ -13692,93 +13829,275 @@ Name: VALOR_REEMBOLSADO, Length: 91, dtype: float64</pre>
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>3867</th>
-      <th>10153</th>
-      <th>10183</th>
-      <th>10188</th>
-      <th>10225</th>
+      <th>Ano de exibição</th>
+      <th>Título da obra</th>
+      <th>Gênero</th>
+      <th>País(es) produtor(es) da obra</th>
+      <th>Nacionalidade da obra</th>
+      <th>Data de lançamento</th>
+      <th>Distribuidora</th>
+      <th>Origem da empresa distribuidora</th>
+      <th>Público no ano de exibição</th>
+      <th>Renda (R$) no ano de exibição</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Tamanho do novo DataFrame</span>
+<span class="n">df_novo</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[22]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(5516, 10)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Convertendo a coluna &#39;Data de lançamento&#39; para datetime</span>
+<span class="n">df_novo</span><span class="p">[</span><span class="s1">&#39;Data de lançamento&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_novo</span><span class="p">[</span><span class="s1">&#39;Data de lançamento&#39;</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/home/valeria/anaconda3/lib/python3.7/site-packages/ipykernel_launcher.py:2: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+  
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Verificando os tipos das colunas</span>
+<span class="n">df_novo</span><span class="o">.</span><span class="n">dtypes</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[24]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Ano de exibição                             int64
+Título da obra                             object
+Gênero                                     object
+País(es) produtor(es) da obra              object
+Nacionalidade da obra                      object
+Data de lançamento                 datetime64[ns]
+Distribuidora                              object
+Origem da empresa distribuidora            object
+Público no ano de exibição                  int64
+Renda (R$) no ano de exibição             float64
+dtype: object</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Quais os anos tiveram mais filmes lançados</span>
+<span class="n">num_filmes_ano</span> <span class="o">=</span> <span class="n">df_novo</span><span class="p">[</span><span class="s1">&#39;Data de lançamento&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Plotando no gráfico </span>
+<span class="n">num_filmes_ano</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[26]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0xa93cb40c&gt;</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Qual o filme com maior bilheteria</span>
+<span class="n">df_novo</span><span class="p">[</span><span class="n">df_novo</span><span class="p">[</span><span class="s1">&#39;Renda (R$) no ano de exibição&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">df_novo</span><span class="p">[</span><span class="s1">&#39;Renda (R$) no ano de exibição&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[31]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Ano de exibição</th>
+      <th>Título da obra</th>
+      <th>Gênero</th>
+      <th>País(es) produtor(es) da obra</th>
+      <th>Nacionalidade da obra</th>
+      <th>Data de lançamento</th>
+      <th>Distribuidora</th>
+      <th>Origem da empresa distribuidora</th>
+      <th>Público no ano de exibição</th>
+      <th>Renda (R$) no ano de exibição</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>ANO</th>
-      <td>2018</td>
-      <td>2018</td>
-      <td>2018</td>
-      <td>2018</td>
-      <td>2018</td>
-    </tr>
-    <tr>
-      <th>MES</th>
-      <td>5</td>
-      <td>3</td>
-      <td>4</td>
-      <td>4</td>
-      <td>5</td>
-    </tr>
-    <tr>
-      <th>SENADOR</th>
-      <td>DÁRIO BERGER</td>
-      <td>JORGE VIANA</td>
-      <td>JORGE VIANA</td>
-      <td>JORGE VIANA</td>
-      <td>JORGE VIANA</td>
-    </tr>
-    <tr>
-      <th>TIPO_DESPESA</th>
-      <td>Passagens aéreas, aquáticas e terrestres nacio...</td>
-      <td>Passagens aéreas, aquáticas e terrestres nacio...</td>
-      <td>Passagens aéreas, aquáticas e terrestres nacio...</td>
-      <td>Passagens aéreas, aquáticas e terrestres nacio...</td>
-      <td>Passagens aéreas, aquáticas e terrestres nacio...</td>
-    </tr>
-    <tr>
-      <th>CNPJ_CPF</th>
-      <td>02.575.829/0001-48</td>
-      <td>33.937.681/0001-78</td>
-      <td>07.575.651/0001-59</td>
-      <td>33.937.681/0001-78</td>
-      <td>33.937.681/0001-78</td>
-    </tr>
-    <tr>
-      <th>FORNECEDOR</th>
-      <td>AVIANCA BRASIL</td>
-      <td>LATAM</td>
-      <td>GOL TRANSPORTES AÉREOS S/A</td>
-      <td>LATAM</td>
-      <td>LATAM</td>
-    </tr>
-    <tr>
-      <th>DOCUMENTO</th>
-      <td>K5RKJV</td>
-      <td>W4UUE7</td>
-      <td>ZHV36P</td>
-      <td>W6ZMK3</td>
-      <td>OZALEF</td>
-    </tr>
-    <tr>
-      <th>DATA</th>
-      <td>29/05/2018</td>
-      <td>21/03/2018</td>
-      <td>09/03/2018</td>
-      <td>17/04/2018</td>
-      <td>22/05/2018</td>
-    </tr>
-    <tr>
-      <th>DETALHAMENTO</th>
-      <td>Companhia Aérea: AVIANCA, Localizador: K5RKJV....</td>
-      <td>Companhia Aérea: LATAM, Localizador: W4UUE7. P...</td>
-      <td>Companhia Aérea: GOL, Localizador: ZHV36P. Pas...</td>
-      <td>Companhia Aérea: LATAM, Localizador: W6ZMK3. P...</td>
-      <td>Companhia Aérea: LATAM, Localizador: OZALEF. P...</td>
-    </tr>
-    <tr>
-      <th>VALOR_REEMBOLSADO</th>
-      <td>0.01</td>
-      <td>0.01</td>
-      <td>0.01</td>
-      <td>0.01</td>
-      <td>0.01</td>
+      <th>2249</th>
+      <td>2015</td>
+      <td>Vingadores: A Era de Ultron</td>
+      <td>Ficção</td>
+      <td>Estados Unidos</td>
+      <td>Estrangeiros</td>
+      <td>2015-04-23</td>
+      <td>Disney</td>
+      <td>Distribuição Internacional</td>
+      <td>10129071</td>
+      <td>146184931.0</td>
     </tr>
   </tbody>
 </table>
@@ -13793,11 +14112,11 @@ Name: VALOR_REEMBOLSADO, Length: 91, dtype: float64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Quantidade de reembolso por tipos de despesa</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;TIPO_DESPESA&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Quais 3 filmes com melhor renda</span>
+<span class="n">df_novo</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;Renda (R$) no ano de exibição&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13810,20 +14129,84 @@ Name: VALOR_REEMBOLSADO, Length: 91, dtype: float64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[10]:</div>
+    <div class="prompt output_prompt">Out[34]:</div>
 
 
 
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
-<div class="output_text output_subarea output_execute_result">
-<pre>Locomoção, hospedagem, alimentação, combustíveis e lubrificantes                                                                                                                                   10135
-Passagens aéreas, aquáticas e terrestres nacionais                                                                                                                                                  5818
-Aluguel de imóveis para escritório político, compreendendo despesas concernentes a eles.                                                                                                            5010
-Aquisição de material de consumo para uso no escritório político, inclusive aquisição ou locação de software, despesas postais, aquisição de publicações, locação de móveis e de equipamentos.      1760
-Contratação de consultorias, assessorias, pesquisas, trabalhos técnicos e outros serviços de apoio ao exercício do mandato parlamentar                                                               927
-Divulgação da atividade parlamentar                                                                                                                                                                  750
-Serviços de Segurança Privada                                                                                                                                                                         44
-Name: TIPO_DESPESA, dtype: int64</pre>
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Ano de exibição</th>
+      <th>Título da obra</th>
+      <th>Gênero</th>
+      <th>País(es) produtor(es) da obra</th>
+      <th>Nacionalidade da obra</th>
+      <th>Data de lançamento</th>
+      <th>Distribuidora</th>
+      <th>Origem da empresa distribuidora</th>
+      <th>Público no ano de exibição</th>
+      <th>Renda (R$) no ano de exibição</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2249</th>
+      <td>2015</td>
+      <td>Vingadores: A Era de Ultron</td>
+      <td>Ficção</td>
+      <td>Estados Unidos</td>
+      <td>Estrangeiros</td>
+      <td>2015-04-23</td>
+      <td>Disney</td>
+      <td>Distribuição Internacional</td>
+      <td>10129071</td>
+      <td>1.461849e+08</td>
+    </tr>
+    <tr>
+      <th>893</th>
+      <td>2016</td>
+      <td>Capitão América: Guerra civil</td>
+      <td>Ficção</td>
+      <td>Estados Unidos</td>
+      <td>Estrangeiros</td>
+      <td>2016-04-28</td>
+      <td>Disney</td>
+      <td>Distribuição Internacional</td>
+      <td>9617572</td>
+      <td>1.433370e+08</td>
+    </tr>
+    <tr>
+      <th>2242</th>
+      <td>2015</td>
+      <td>Velozes e Furiosos 7</td>
+      <td>Ficção</td>
+      <td>Estados Unidos</td>
+      <td>Estrangeiros</td>
+      <td>2015-04-02</td>
+      <td>Universal</td>
+      <td>Distribuição Internacional</td>
+      <td>9857946</td>
+      <td>1.424659e+08</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 </div>
 
 </div>
@@ -13834,11 +14217,11 @@ Name: TIPO_DESPESA, dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Quanto foi reembolsado por cada tipo de despesa</span>
-<span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;TIPO_DESPESA&#39;</span><span class="p">)[</span><span class="s1">&#39;VALOR_REEMBOLSADO&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Filmes com menor bilheteria</span>
+<span class="n">df_novo</span><span class="p">[</span><span class="n">df_novo</span><span class="p">[</span><span class="s1">&#39;Renda (R$) no ano de exibição&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">df_novo</span><span class="p">[</span><span class="s1">&#39;Renda (R$) no ano de exibição&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()]</span>
 </pre></div>
 
     </div>
@@ -13851,21 +14234,615 @@ Name: TIPO_DESPESA, dtype: int64</pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[11]:</div>
+    <div class="prompt output_prompt">Out[35]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Ano de exibição</th>
+      <th>Título da obra</th>
+      <th>Gênero</th>
+      <th>País(es) produtor(es) da obra</th>
+      <th>Nacionalidade da obra</th>
+      <th>Data de lançamento</th>
+      <th>Distribuidora</th>
+      <th>Origem da empresa distribuidora</th>
+      <th>Público no ano de exibição</th>
+      <th>Renda (R$) no ano de exibição</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2277</th>
+      <td>2014</td>
+      <td>A Batalha do passinho</td>
+      <td>Documentário</td>
+      <td>Brasil</td>
+      <td>Brasileiros</td>
+      <td>2013-10-11</td>
+      <td>Cine Santa Teresa</td>
+      <td>Distribuição Nacional</td>
+      <td>355</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2608</th>
+      <td>2014</td>
+      <td>Mar negro</td>
+      <td>Ficção</td>
+      <td>Brasil</td>
+      <td>Brasileiros</td>
+      <td>2014-01-17</td>
+      <td>Petrini</td>
+      <td>Distribuição Nacional</td>
+      <td>0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2728</th>
+      <td>2014</td>
+      <td>O Último Lance do Leilão</td>
+      <td>Ficção</td>
+      <td>Brasil</td>
+      <td>Brasileiros</td>
+      <td>2014-05-01</td>
+      <td>Sam Rádio Pictures</td>
+      <td>Distribuição Nacional</td>
+      <td>0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3041</th>
+      <td>2013</td>
+      <td>As horas vulgares</td>
+      <td>Ficção</td>
+      <td>Brasil</td>
+      <td>Brasileiros</td>
+      <td>2013-08-09</td>
+      <td>Petrini</td>
+      <td>Distribuição Nacional</td>
+      <td>0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3058</th>
+      <td>2013</td>
+      <td>Beije-me outra vez</td>
+      <td>Ficção</td>
+      <td>Itália</td>
+      <td>Estrangeiros</td>
+      <td>2013-05-10</td>
+      <td>Petrini</td>
+      <td>Distribuição Nacional</td>
+      <td>0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3105</th>
+      <td>2013</td>
+      <td>Crazy Horse</td>
+      <td>Ficção</td>
+      <td>Estados Unidos</td>
+      <td>Estrangeiros</td>
+      <td>2013-06-28</td>
+      <td>Petrini</td>
+      <td>Distribuição Nacional</td>
+      <td>0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3390</th>
+      <td>2013</td>
+      <td>Quase um tango</td>
+      <td>Ficção</td>
+      <td>Brasil</td>
+      <td>Brasileiros</td>
+      <td>2013-08-16</td>
+      <td>NGM Produções</td>
+      <td>Distribuição Nacional</td>
+      <td>0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3459</th>
+      <td>2013</td>
+      <td>Todos os Dias</td>
+      <td>Ficção</td>
+      <td>Reino Unido</td>
+      <td>Estrangeiros</td>
+      <td>2014-01-24</td>
+      <td>Esfera Produções</td>
+      <td>Distribuição Nacional</td>
+      <td>0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3603</th>
+      <td>2012</td>
+      <td>Apenas entre Nós</td>
+      <td>Ficção</td>
+      <td>França, Eslovênia, Sérvia, Croácia</td>
+      <td>Estrangeiros</td>
+      <td>2015-05-07</td>
+      <td>Lume</td>
+      <td>Distribuição Nacional</td>
+      <td>0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3627</th>
+      <td>2012</td>
+      <td>Ataque ao prédio</td>
+      <td>Ficção</td>
+      <td>Reino Unido</td>
+      <td>Estrangeiros</td>
+      <td>2012-01-13</td>
+      <td>Sony</td>
+      <td>Distribuição Internacional</td>
+      <td>0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3665</th>
+      <td>2012</td>
+      <td>Clementina de Jesus - Rainha Quelé</td>
+      <td>Documentário</td>
+      <td>Brasil</td>
+      <td>Brasileiros</td>
+      <td>2012-11-15</td>
+      <td>Werinton Kermes Telles Marsal</td>
+      <td>Distribuição Nacional</td>
+      <td>0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3787</th>
+      <td>2012</td>
+      <td>Luto em Luta</td>
+      <td>Documentário</td>
+      <td>Brasil</td>
+      <td>Brasileiros</td>
+      <td>2012-09-21</td>
+      <td>Like Filmes</td>
+      <td>Distribuição Nacional</td>
+      <td>0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3815</th>
+      <td>2012</td>
+      <td>Movimento Browniano</td>
+      <td>Ficção</td>
+      <td>Holanda</td>
+      <td>Estrangeiros</td>
+      <td>2012-07-06</td>
+      <td>Petrini</td>
+      <td>Distribuição Nacional</td>
+      <td>0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3829</th>
+      <td>2012</td>
+      <td>O abrigo</td>
+      <td>Ficção</td>
+      <td>Estados Unidos</td>
+      <td>Estrangeiros</td>
+      <td>2012-06-01</td>
+      <td>Sony</td>
+      <td>Distribuição Internacional</td>
+      <td>0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3920</th>
+      <td>2012</td>
+      <td>Ponto Org</td>
+      <td>Ficção</td>
+      <td>Brasil</td>
+      <td>Brasileiros</td>
+      <td>2012-09-21</td>
+      <td>Usina Digital</td>
+      <td>Distribuição Nacional</td>
+      <td>0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4085</th>
+      <td>2011</td>
+      <td>A Última Estrada da Praia</td>
+      <td>Ficção</td>
+      <td>Brasil</td>
+      <td>Brasileiros</td>
+      <td>2011-09-16</td>
+      <td>Okna Produções</td>
+      <td>Distribuição Nacional</td>
+      <td>0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4462</th>
+      <td>2011</td>
+      <td>Poema de Salvação</td>
+      <td>Ficção</td>
+      <td>Argentina</td>
+      <td>Estrangeiros</td>
+      <td>2011-09-30</td>
+      <td>Canzión filmes</td>
+      <td>Distribuição Nacional</td>
+      <td>0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4466</th>
+      <td>2011</td>
+      <td>Porta a porta – A política em dois tempos</td>
+      <td>Documentário</td>
+      <td>Brasil</td>
+      <td>Brasileiros</td>
+      <td>2011-12-02</td>
+      <td>Zéfiro Produções</td>
+      <td>Distribuição Nacional</td>
+      <td>0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4587</th>
+      <td>2011</td>
+      <td>Walachai</td>
+      <td>Documentário</td>
+      <td>Brasil</td>
+      <td>Brasileiros</td>
+      <td>2011-11-18</td>
+      <td>Ciclorama</td>
+      <td>Distribuição Nacional</td>
+      <td>0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4732</th>
+      <td>2010</td>
+      <td>Cine Cocoricó: As Aventuras na Cidade</td>
+      <td>Ficção</td>
+      <td>Brasil</td>
+      <td>Brasileiros</td>
+      <td>2009-07-17</td>
+      <td>Moviemobz</td>
+      <td>Distribuição Nacional</td>
+      <td>1</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4853</th>
+      <td>2010</td>
+      <td>Luto Como Mãe</td>
+      <td>Documentário</td>
+      <td>Brasil</td>
+      <td>Brasileiros</td>
+      <td>2010-08-20</td>
+      <td>TV Zero Cinema</td>
+      <td>Distribuição Nacional</td>
+      <td>0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>5022</th>
+      <td>2010</td>
+      <td>Simonal - Ninguém Sabe o Duro que Dei</td>
+      <td>Documentário</td>
+      <td>Brasil</td>
+      <td>Brasileiros</td>
+      <td>2009-05-15</td>
+      <td>Moviemobz/RioFilme</td>
+      <td>Distribuição Nacional</td>
+      <td>1</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>5203</th>
+      <td>2009</td>
+      <td>As Chaves de Casa</td>
+      <td>Ficção</td>
+      <td>Itália</td>
+      <td>Estrangeiros</td>
+      <td>2006-01-06</td>
+      <td>Filmes do Estação</td>
+      <td>Distribuição Nacional</td>
+      <td>0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>5463</th>
+      <td>2009</td>
+      <td>Naufrágio - Mistério e Morte na Catástrofe do ...</td>
+      <td>Documentário</td>
+      <td>Brasil</td>
+      <td>Brasileiros</td>
+      <td>2009-12-25</td>
+      <td>Master Shot Produções</td>
+      <td>Distribuição Nacional</td>
+      <td>0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>5591</th>
+      <td>2009</td>
+      <td>Santiago</td>
+      <td>Documentário</td>
+      <td>Brasil</td>
+      <td>Brasileiros</td>
+      <td>2007-08-24</td>
+      <td>Videofilmes</td>
+      <td>Distribuição Nacional</td>
+      <td>0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>5666</th>
+      <td>2009</td>
+      <td>Vamos Subir, Leão</td>
+      <td>Documentário</td>
+      <td>Brasil</td>
+      <td>Brasileiros</td>
+      <td>2009-03-20</td>
+      <td>Canal 3</td>
+      <td>Distribuição Nacional</td>
+      <td>0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Quantos filmes brasileiros e extrangeiros</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Nacionalidade da obra&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[36]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>TIPO_DESPESA
-Passagens aéreas, aquáticas e terrestres nacionais                                                                                                                                                 6334569.27
-Locomoção, hospedagem, alimentação, combustíveis e lubrificantes                                                                                                                                   5613542.84
-Aluguel de imóveis para escritório político, compreendendo despesas concernentes a eles.                                                                                                           5032315.61
-Contratação de consultorias, assessorias, pesquisas, trabalhos técnicos e outros serviços de apoio ao exercício do mandato parlamentar                                                             4966336.81
-Divulgação da atividade parlamentar                                                                                                                                                                2568910.24
-Aquisição de material de consumo para uso no escritório político, inclusive aquisição ou locação de software, despesas postais, aquisição de publicações, locação de móveis e de equipamentos.      900259.84
-Serviços de Segurança Privada                                                                                                                                                                       172213.61
-Name: VALOR_REEMBOLSADO, dtype: float64</pre>
+<pre>Estrangeiros    4072
+Brasileiros     1619
+Name: Nacionalidade da obra, dtype: int64</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Número de filmes por país</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;País(es) produtor(es) da obra&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[37]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Estados Unidos                                       1780
+Brasil                                               1513
+França                                                546
+Reino Unido                                            85
+Argentina                                              75
+Espanha                                                73
+Alemanha                                               72
+Itália                                                 69
+Estados Unidos, Reino Unido                            66
+Inglaterra                                             52
+Japão                                                  48
+Bélgica, França                                        41
+França, Itália                                         37
+Canadá                                                 33
+Coréia do Sul                                          31
+Argentina, Espanha                                     28
+Suécia                                                 28
+Alemanha, França                                       25
+México                                                 25
+Rússia                                                 23
+Canadá, Estados Unidos                                 21
+Estados Unidos, França                                 20
+Portugal                                               19
+China                                                  18
+Bélgica                                                16
+Canadá, França                                         15
+Irã                                                    15
+Austrália                                              15
+Uruguai                                                13
+Polônia                                                13
+                                                     ... 
+Alemanha, Estados Unidos, França, Hungria               1
+Alemanha, França, Holanda                               1
+Brasil, Estados Unidos, França, Itália                  1
+Alemanha, Canadá, Finlândia, França, Suécia             1
+Alemanha, Austrália, Canadá, França                     1
+Estados Unidos, México                                  1
+Argentina, Itália                                       1
+Canadá, Estados Unidos, França                          1
+Brasil, Canadá, França                                  1
+Alemanha, Bélgica, Dinamarca, França, Reino Unido       1
+Argentina, Israel                                       1
+Sérvia                                                  1
+Mônaco, França                                          1
+Alemanha, Dinamarca, Noruega, Suécia                    1
+Alemanha, Canadá, Inglaterra, Suíça                     1
+Dinamarca, Holanda, Suécia                              1
+França, Brasil                                          1
+Espanha, Brasil                                         1
+Alemanha, Bélgica, França, Rússia                       1
+Bélgica, Luxemburgo                                     1
+Bélgica, Holanda                                        1
+Brasil, Itália                                          1
+Argentina, Peru                                         1
+Egito                                                   1
+Bulgária, França, Romênia                               1
+França, Itália, Qatar, Tunísia                          1
+Canadá, Brasil                                          1
+África do Sul, Reino Unido                              1
+Bulgária, Grécia                                        1
+Argentina, Colômbia, Venezuela                          1
+Name: País(es) produtor(es) da obra, Length: 386, dtype: int64</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># 10 primeiros países por número de filmes</span>
+<span class="n">filmes_pais</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;País(es) produtor(es) da obra&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[42]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Plotando no gráfico</span>
+<span class="n">filmes_pais</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">pie</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[42]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0xa8a6d60c&gt;</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[43]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># filmes por gênero</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Gênero&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[43]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Ficção          4501
+Documentário     738
+Animação         411
+Vídeomusical      41
+Name: Gênero, dtype: int64</pre>
 </div>
 
 </div>
